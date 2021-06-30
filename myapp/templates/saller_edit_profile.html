@@ -1,0 +1,154 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+
+
+<header>
+        <!-- Header desktop -->
+        <div class="wrap-menu-header gradient1 trans-0-4">
+            <div class="container h-full">
+                <div class="wrap_header trans-0-3">
+                    <!-- Logo -->
+                    <div class="logo">
+                        <a href="index.html">
+                            <img src="{% static 'images/icons/logo.png' %}" alt="IMG-LOGO" data-logofixed="{% static 'images/icons/logo2.png' %}">
+                        </a>
+                    </div>
+
+                    <!-- Menu -->
+                    <div class="wrap_menu p-l-45 p-l-0-xl">
+                        <nav class="menu">
+                            <ul class="main_menu">
+                                <li>
+                                    <a href="{% url 'saller_login' %}">Home</a>
+                                </li>
+
+                                <li>
+                                    <!--<a href="{% url 'gallery' %}">Gallery fgfhgfgh</a>-->
+                                    <a href="{% url 'saller_add_product' %}">Add Product</a>
+                                </li>
+                                <li>
+                                    <!--<a href="{% url 'about' %}">About jhgjgj</a>-->
+                                    <a href="{% url 'saller_view_product' %}">View Product</a> 
+                                </li>
+                                <li>
+                                    <!--<a href="{% url 'contact' %}">Contact</a>-->
+                                </li>
+
+                                {% if request.session.email %}
+
+                                    <li>
+                                        <a href="{% url 'saller_edit_profile' %}"><span class="glyphicon glyphicon-change"></span>Edit Profile</a>
+                                    </li>
+                        
+                                    <li>
+                                        <a href="{% url 'saller_change_password' %}"><span class="glyphicon glyphicon-change"></span>Change Password</a>
+                                    </li>
+
+                                    <li>
+                                        <a href="{% url 'logout' %}"><span class="glyphicon glyphicon-change"></span>LogOut {{request.session.fname}}</a>
+                                        <img src="{{request.session.image}}" width="40px" height="40px">
+                                    </li>
+                                
+                                {% else %}
+                                
+                                    <li>
+                                        <a href="{% url 'signup' %}"><span class="glyphicon glyphicon-change"></span>Sign UP</a>
+                                    </li>
+
+                                    <li>
+                                        <a href="{% url 'saller_login' %}"><span class="glyphicon glyphicon-change"></span>Login</a>
+                                    </li>
+                                
+                                {% endif %}
+
+                                
+
+                                
+
+                                
+                            </ul>
+                        </nav>
+                    </div>
+
+                    <!-- Social -->
+                    <div class="social flex-w flex-l-m p-r-20">
+                        <a href="#"><i class="fa fa-tripadvisor" aria-hidden="true"></i></a>
+                        <a href="#"><i class="fa fa-facebook m-l-21" aria-hidden="true"></i></a>
+                        <a href="#"><i class="fa fa-twitter m-l-21" aria-hidden="true"></i></a>
+
+                        <button class="btn-show-sidebar m-l-33 trans-0-4"></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+</header>
+   
+
+
+
+
+
+
+
+
+
+
+
+<form name="edit_profile" method="POST" action="{% url 'saller_edit_profile' %}" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="container rounded bg-white mt-5 mb-5">
+    <div class="row">
+        <div class="col-md-3 border-right">
+            <div class="d-flex flex-column align-items-center text-center p-3 py-5"><img class="rounded-circle mt-5" src="{{request.session.image}}" width="200px" height="200px"><span class="font-weight-bold">{{request.session.fname}}</span><span class="text-black-50"><input type="file" name="image"></span><span> </span></div>
+        </div>
+        <div class="col-md-5 border-right">
+            <div class="p-3 py-5">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h4 class="text-right">Edit Profile</h4>
+                </div>
+                {% if user.usertype == 'user' %}
+                    <div class="col-md-12"><label class="labels">Usertype</label>
+                        <input type="radio" class="form-control" name="user" value="usertype" checked="checked">User
+                        <input type="radio" class="form-control" name="Saller" value="usertype">Saller
+                    </div>
+                {% else %}
+                    <div class="col-md-12"><label class="labels">Usertype</label>
+                        <input type="radio" class="form-control" name="user" value="usertype">User
+                        <input type="radio" class="form-control" name="Saller" value="usertype" checked="checked">Saller
+                    </div>
+                {% endif %}
+                <div class="row mt-2">
+                    <div class="col-md-6"><label class="labels">First Name</label><input type="text" class="form-control" placeholder="first name" value="{{user.fname}}" name="fname"></div>
+                    <div class="col-md-6"><label class="labels">Last Name</label><input type="text" class="form-control"  placeholder="last name" value="{{user.lname}}" name="lname"></div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-md-12"><label class="labels">Phone</label><input type="text" class="form-control" placeholder="mobile" value="{{user.phone}}" name="phone"></div>
+                    <div class="col-md-12"><label class="labels">Address</label><input type="text" class="form-control" placeholder="enter address" value="{{user.address}}" name="address"></div>
+                    <div class="col-md-12"><label class="labels">Email</label><input type="text" class="form-control" placeholder="enter email id" value="{{user.email}}" name="email"></div>
+                    {% if user.gender == 'male' %}
+                        <div class="col-md-12"><label class="labels">Gender</label>
+                            <input type="radio" class="form-control" name="gender" value="male" checked="checked">Male
+                            <input type="radio" class="form-control" name="gender" value="female">Female
+                        </div>
+                    {% else %}
+                        <div class="col-md-12"><label class="labels">Gender</label>
+                            <input type="radio" class="form-control" name="gender" value="male">Male
+                            <input type="radio" class="form-control" name="gender" value="female" checked="checked">Female
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="mt-5 text-center"><button class="btn btn-primary profile-button" type="submit">Save Profile</button></div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+</form>
+</body>
+</html>
